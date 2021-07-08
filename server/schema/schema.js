@@ -15,11 +15,11 @@ const usersData = [
     {id: '5', name: 'Georgina', age: 13, profession: 'Student'},
 ]
 const hobbiesData = [
-    {id: '1', title: 'Hiking', description: 'In the hills'},
-    {id: '2', title: 'Snowboarding', description: 'In icy hills'},
-    {id: '3', title: 'Biking', description: 'Feet on the pedal'},
-    {id: '4', title: 'Cooking', description: 'Aromatique'},
-    {id: '5', title: 'Running', description: 'Run club'},
+    {id: '1', title: 'Hiking', description: 'In the hills', userId: '1'},
+    {id: '2', title: 'Snowboarding', description: 'In icy hills', userId: '4'},
+    {id: '3', title: 'Biking', description: 'Feet on the pedal', userId: '5'},
+    {id: '4', title: 'Cooking', description: 'Aromatique', userId: '1'},
+    {id: '5', title: 'Running', description: 'Run club', userId: '5'},
 ]
 const postsData = [
     {id: '1', comment: 'Post #1', userId: '1'},
@@ -47,7 +47,13 @@ const HobbyType = new GraphQLObjectType({
     fields: () => ({
         id: {type: GraphQLID},
         title: {type: GraphQLString},
-        description: {type: GraphQLString}
+        description: {type: GraphQLString},
+        user: {
+            type: UserType,
+            resolve(parent, args) {
+                return _.find(usersData, {id: parent.userId})
+            }
+        }
     })
 })
 
@@ -122,8 +128,11 @@ module.exports = new GraphQLSchema({
     name
     profession
   }
-  hobby(id: "1") {
+  hobby(id: "5") {
     title
+    user {
+      name
+    }
   }
   post(id: "1") {
     comment
