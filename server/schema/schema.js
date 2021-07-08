@@ -102,6 +102,12 @@ const RootQuery = new GraphQLObjectType({
                 return _.find(usersData, { id: args.id})
             }
         },
+        users: {
+            type: new GraphQLList(UserType),
+            resolve(parent, args) {
+                return usersData
+            }
+        },
         hobby: {
             type: HobbyType,
             args: { 
@@ -112,6 +118,12 @@ const RootQuery = new GraphQLObjectType({
                 // get and return data from a data-source
 
                 return _.find(hobbiesData, { id: args.id})
+            }
+        },
+        hobbies: {
+            type: new GraphQLList(HobbyType),
+            resolve(parent, args) {
+                return hobbiesData
             }
         },
         post: {
@@ -125,7 +137,13 @@ const RootQuery = new GraphQLObjectType({
 
                 return _.find(postsData, { id: args.id})
             }
-        }
+        },
+        posts: {
+            type: new GraphQLList(PostType),
+            resolve(parent, args) {
+                return postsData
+            }
+        },
     }
 })
 
@@ -203,6 +221,11 @@ module.exports = new GraphQLSchema({
     hobbies {
       title
     }
+  }
+  users {
+    name
+    age
+    profession
   }
   hobby(id: "5") {
     title
