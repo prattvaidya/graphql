@@ -8,15 +8,6 @@ const {
     GraphQLFloat
 } = require('graphql')
 
-// RootQuery
-const RootQuery = new GraphQLObjectType({
-    name: 'RootQueryType',
-    description: "Description for RootQueryType",
-    fields: {
-
-    }
-})
-
 // Scalar types
 /**
  * String = GraphQLString
@@ -26,7 +17,7 @@ const RootQuery = new GraphQLObjectType({
  * ID
  */
 
-const Person = new GraphQLObjectType({
+ const Person = new GraphQLObjectType({
     name: "Person",
     description: "Represents a person type",
     fields: () => ({
@@ -37,6 +28,28 @@ const Person = new GraphQLObjectType({
         gpa: {type: GraphQLFloat}
     })
 })
+
+// RootQuery
+const RootQuery = new GraphQLObjectType({
+    name: 'RootQueryType',
+    description: "Description for RootQueryType",
+    fields: {
+        person: {
+            type: Person,
+            resolve(parent, args) {
+                let personObj = {
+                    name: "Antonio",
+                    age: 34,
+                    isMarried: true,
+                    gpa: 4.01
+                }
+                return personObj
+            }
+        }
+    }
+})
+
+
 
 module.exports = new GraphQLSchema({
     query: RootQuery
