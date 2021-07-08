@@ -3,7 +3,8 @@ const {
     GraphQLID,
     GraphQLString,
     GraphQLInt,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLList
 } = require('graphql')
 var _ = require('lodash')
 
@@ -37,7 +38,13 @@ const UserType = new GraphQLObjectType({
         id: {type: GraphQLID},
         name: {type: GraphQLString},
         age: {type: GraphQLInt},
-        profession: {type: GraphQLString}
+        profession: {type: GraphQLString},
+        posts: {
+            type: new GraphQLList(PostType),
+            resolve(parent, args) {
+                return _.filter(postsData, {userId: parent.id})
+            }
+        }
     })
 })
 
@@ -123,10 +130,13 @@ module.exports = new GraphQLSchema({
 // GraphiQL queries
 /**
 {
-  user(id: "2") {
+  user(id: "5") {
     age
     name
     profession
+    posts {
+      comment
+    }
   }
   hobby(id: "5") {
     title
