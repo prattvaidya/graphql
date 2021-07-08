@@ -44,6 +44,12 @@ const UserType = new GraphQLObjectType({
             resolve(parent, args) {
                 return _.filter(postsData, {userId: parent.id})
             }
+        },
+        hobbies: {
+            type: new GraphQLList(HobbyType),
+            resolve(parent, args) {
+                return _.filter(hobbiesData, {userId: parent.id})
+            }
         }
     })
 })
@@ -136,6 +142,9 @@ module.exports = new GraphQLSchema({
     profession
     posts {
       comment
+    }
+    hobbies {
+      title
     }
   }
   hobby(id: "5") {
