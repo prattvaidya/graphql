@@ -5,7 +5,8 @@ const {
     GraphQLString,
     GraphQLInt,
     GraphQLBoolean,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLNonNull
 } = require('graphql')
 
 // Scalar types
@@ -22,7 +23,7 @@ const {
     description: "Represents a person type",
     fields: () => ({
         id: {type: GraphQLID},
-        name: {type: GraphQLString},
+        name: {type: new GraphQLNonNull(GraphQLString)},
         age: {type: GraphQLInt},
         isMarried: {type: GraphQLBoolean},
         gpa: {type: GraphQLFloat}
@@ -38,7 +39,7 @@ const RootQuery = new GraphQLObjectType({
             type: Person,
             resolve(parent, args) {
                 let personObj = {
-                    name: "Antonio",
+                    name: null,
                     age: 34,
                     isMarried: true,
                     gpa: 4.01
