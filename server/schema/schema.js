@@ -226,6 +226,12 @@ module.exports = new GraphQLSchema({
     name
     age
     profession
+    hobbies {
+      description
+    }
+    posts {
+      comment
+    }
   }
   hobby(id: "5") {
     title
