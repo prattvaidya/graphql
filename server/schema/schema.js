@@ -22,11 +22,11 @@ const hobbiesData = [
     {id: '5', title: 'Running', description: 'Run club'},
 ]
 const postsData = [
-    {id: '1', comment: 'Post #1'},
-    {id: '2', comment: 'Post #2'},
-    {id: '3', comment: 'Post #3'},
-    {id: '4', comment: 'Post #4'},
-    {id: '5', comment: 'Post #5'},
+    {id: '1', comment: 'Post #1', userId: '1'},
+    {id: '2', comment: 'Post #2', userId: '4'},
+    {id: '3', comment: 'Post #3', userId: '5'},
+    {id: '4', comment: 'Post #4', userId: '1'},
+    {id: '5', comment: 'Post #5', userId: '5'},
 ]
 
 // create types
@@ -56,7 +56,13 @@ const PostType = new GraphQLObjectType({
     description: 'Documentation for post',
     fields: () => ({
         id: {type: GraphQLID},
-        comment: {type: GraphQLString}
+        comment: {type: GraphQLString},
+        user: {
+            type: UserType,
+            resolve(parent, args) {
+                return _.find(usersData, {id: parent.userId})
+            }
+        }
     })
 })
 
