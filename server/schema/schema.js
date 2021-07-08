@@ -116,7 +116,7 @@ module.exports = new GraphQLSchema({
 
 // GraphiQL queries
 /**
- {
+{
   user(id: "2") {
     age
     name
@@ -127,6 +127,9 @@ module.exports = new GraphQLSchema({
   }
   post(id: "1") {
     comment
+    user {
+      name
+    }
   }
 }
 */
