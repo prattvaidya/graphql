@@ -5,6 +5,15 @@ const {
     GraphQLInt,
     GraphQLSchema
 } = require('graphql')
+var _ = require('lodash')
+
+const usersData = [
+    {id: '1', name: 'Bond', age: 26},
+    {id: '2', name: 'Anna', age: 36},
+    {id: '3', name: 'Bella', age: 16},
+    {id: '4', name: 'Gina', age: 23},
+    {id: '5', name: 'Georgina', age: 13},
+]
 
 // create types
 const UserType = new GraphQLObjectType({
@@ -30,6 +39,8 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args) {
                 // we resolve with data
                 // get and return data from a data-source
+
+                return _.find(usersData, { id: args.id})
             }
         }
     }
