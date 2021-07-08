@@ -107,3 +107,20 @@ const RootQuery = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
     query: RootQuery
 })
+
+// GraphiQL queries
+/**
+ {
+  user(id: "2") {
+    age
+    name
+    profession
+  }
+  hobby(id: "1") {
+    title
+  }
+  post(id: "1") {
+    comment
+  }
+}
+*/
