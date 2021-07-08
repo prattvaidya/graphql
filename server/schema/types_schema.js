@@ -55,3 +55,15 @@ const RootQuery = new GraphQLObjectType({
 module.exports = new GraphQLSchema({
     query: RootQuery
 })
+
+// GiQL Query
+/**
+{
+  person {
+    name
+    age
+    isMarried
+    gpa
+  }
+}
+ */
