@@ -39,7 +39,7 @@ const RootQuery = new GraphQLObjectType({
             type: Person,
             resolve(parent, args) {
                 let personObj = {
-                    name: null,
+                    name: "Antonio",
                     age: 34,
                     isMarried: true,
                     gpa: 4.01
