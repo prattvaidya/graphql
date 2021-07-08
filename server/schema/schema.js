@@ -155,7 +155,7 @@ const Mutation = new GraphQLObjectType({
             args: {
                 // id: {type: GraphQLID},
                 comment: {type: GraphQLString},
-                userId: {type: GraphQLString}
+                userId: {type: GraphQLID}
             },
             resolve(parent, args) {
                 let post = {
@@ -165,6 +165,23 @@ const Mutation = new GraphQLObjectType({
                 return post
             }
         },
+        createHobby: {
+            type: HobbyType,
+            args: {
+                // id: {type: GraphQLID},
+                title: {type: GraphQLString},
+                description: {type: GraphQLString},
+                userId: {type: GraphQLID}
+            },
+            resolve(parent, args) {
+                let hobby = {
+                    title: args.title,
+                    description: args.description,
+                    userId: args.userId,
+                }
+                return hobby
+            }
+        }
     }
 })
 
@@ -204,7 +221,7 @@ module.exports = new GraphQLSchema({
 
 // GraphQL mutation
 /**
- mutation {
+mutation {
   createUser(name: "Apollo", age: 27, profession: "Very smart person") {
     id
     name
@@ -215,8 +232,16 @@ module.exports = new GraphQLSchema({
     }
   }
   createPost(comment: "Nouvelle post", userId: "2") {
-    id,
-    comment,
+    id
+    comment
+    user {
+      name
+    }
+  }
+  createHobby(title: "Swimming", description: "In the deep ocean", userId: "1") {
+    id
+    title
+    description
     user {
       name
     }
