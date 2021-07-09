@@ -7,28 +7,31 @@ const {
     GraphQLList
 } = require('graphql')
 var _ = require('lodash')
+const User = require('../model/user')
+const Hobby = require('../model/hobby')
+const Post = require('../model/post')
 
-const usersData = [
-    {id: '1', name: 'Bond', age: 26, profession: 'Detective'},
-    {id: '2', name: 'Anna', age: 36, profession: 'Banker'},
-    {id: '3', name: 'Bella', age: 16, profession: 'Model'},
-    {id: '4', name: 'Gina', age: 23, profession: 'Programmer'},
-    {id: '5', name: 'Georgina', age: 13, profession: 'Student'},
-]
-const hobbiesData = [
-    {id: '1', title: 'Hiking', description: 'In the hills', userId: '1'},
-    {id: '2', title: 'Snowboarding', description: 'In icy hills', userId: '4'},
-    {id: '3', title: 'Biking', description: 'Feet on the pedal', userId: '5'},
-    {id: '4', title: 'Cooking', description: 'Aromatique', userId: '1'},
-    {id: '5', title: 'Running', description: 'Run club', userId: '5'},
-]
-const postsData = [
-    {id: '1', comment: 'Post #1', userId: '1'},
-    {id: '2', comment: 'Post #2', userId: '4'},
-    {id: '3', comment: 'Post #3', userId: '5'},
-    {id: '4', comment: 'Post #4', userId: '1'},
-    {id: '5', comment: 'Post #5', userId: '5'},
-]
+// const usersData = [
+//     {id: '1', name: 'Bond', age: 26, profession: 'Detective'},
+//     {id: '2', name: 'Anna', age: 36, profession: 'Banker'},
+//     {id: '3', name: 'Bella', age: 16, profession: 'Model'},
+//     {id: '4', name: 'Gina', age: 23, profession: 'Programmer'},
+//     {id: '5', name: 'Georgina', age: 13, profession: 'Student'},
+// ]
+// const hobbiesData = [
+//     {id: '1', title: 'Hiking', description: 'In the hills', userId: '1'},
+//     {id: '2', title: 'Snowboarding', description: 'In icy hills', userId: '4'},
+//     {id: '3', title: 'Biking', description: 'Feet on the pedal', userId: '5'},
+//     {id: '4', title: 'Cooking', description: 'Aromatique', userId: '1'},
+//     {id: '5', title: 'Running', description: 'Run club', userId: '5'},
+// ]
+// const postsData = [
+//     {id: '1', comment: 'Post #1', userId: '1'},
+//     {id: '2', comment: 'Post #2', userId: '4'},
+//     {id: '3', comment: 'Post #3', userId: '5'},
+//     {id: '4', comment: 'Post #4', userId: '1'},
+//     {id: '5', comment: 'Post #5', userId: '5'},
+// ]
 
 // create types
 const UserType = new GraphQLObjectType({
@@ -42,13 +45,13 @@ const UserType = new GraphQLObjectType({
         posts: {
             type: new GraphQLList(PostType),
             resolve(parent, args) {
-                return _.filter(postsData, {userId: parent.id})
+                // return _.filter(postsData, {userId: parent.id})
             }
         },
         hobbies: {
             type: new GraphQLList(HobbyType),
             resolve(parent, args) {
-                return _.filter(hobbiesData, {userId: parent.id})
+                // return _.filter(hobbiesData, {userId: parent.id})
             }
         }
     })
@@ -64,7 +67,7 @@ const HobbyType = new GraphQLObjectType({
         user: {
             type: UserType,
             resolve(parent, args) {
-                return _.find(usersData, {id: parent.userId})
+                // return _.find(usersData, {id: parent.userId})
             }
         }
     })
@@ -79,7 +82,7 @@ const PostType = new GraphQLObjectType({
         user: {
             type: UserType,
             resolve(parent, args) {
-                return _.find(usersData, {id: parent.userId})
+                // return _.find(usersData, {id: parent.userId})
             }
         }
     })
@@ -99,13 +102,13 @@ const RootQuery = new GraphQLObjectType({
                 // we resolve with data
                 // get and return data from a data-source
 
-                return _.find(usersData, { id: args.id})
+                // return _.find(usersData, { id: args.id})
             }
         },
         users: {
             type: new GraphQLList(UserType),
             resolve(parent, args) {
-                return usersData
+                // return usersData
             }
         },
         hobby: {
@@ -117,13 +120,13 @@ const RootQuery = new GraphQLObjectType({
                 // we resolve with data
                 // get and return data from a data-source
 
-                return _.find(hobbiesData, { id: args.id})
+                // return _.find(hobbiesData, { id: args.id})
             }
         },
         hobbies: {
             type: new GraphQLList(HobbyType),
             resolve(parent, args) {
-                return hobbiesData
+                // return hobbiesData
             }
         },
         post: {
@@ -135,13 +138,13 @@ const RootQuery = new GraphQLObjectType({
                 // we resolve with data
                 // get and return data from a data-source
 
-                return _.find(postsData, { id: args.id})
+                // return _.find(postsData, { id: args.id})
             }
         },
         posts: {
             type: new GraphQLList(PostType),
             resolve(parent, args) {
-                return postsData
+                // return postsData
             }
         },
     }
@@ -160,11 +163,13 @@ const Mutation = new GraphQLObjectType({
                 profession: {type: GraphQLString},
             },
             resolve(parent, args) {
-                let user = {
+                let user = new User({
                     name: args.name,
                     age: args.age,
                     profession: args.profession,
-                }
+                })
+                // Save to mongo
+                user.save()
                 return user
             }
         },
@@ -176,10 +181,11 @@ const Mutation = new GraphQLObjectType({
                 userId: {type: GraphQLID}
             },
             resolve(parent, args) {
-                let post = {
+                let post = new Post({
                     comment: args.comment,
                     userId: args.userId,
-                }
+                })
+                post.save()
                 return post
             }
         },
@@ -192,11 +198,12 @@ const Mutation = new GraphQLObjectType({
                 userId: {type: GraphQLID}
             },
             resolve(parent, args) {
-                let hobby = {
+                let hobby = new Hobby({
                     title: args.title,
                     description: args.description,
                     userId: args.userId,
-                }
+                })
+                hobby.save()
                 return hobby
             }
         }
