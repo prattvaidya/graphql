@@ -11,6 +11,7 @@ mongoose.connection.once('open', () => {
 })
 
 const cors = require('cors')
+const port = process.env.PORT || 4000
  
 const app = express()
 app.use(cors())
@@ -19,6 +20,6 @@ app.use('/graphql', graphqlHTTP({
     schema
 }))
 
-app.listen(4000, () => { // localhost:4000
+app.listen(port, () => { // localhost:4000
     console.log('Listening for requests on my awesome port 4000');
 })
