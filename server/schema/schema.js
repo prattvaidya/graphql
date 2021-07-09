@@ -206,6 +206,15 @@ const Mutation = new GraphQLObjectType({
                 )
             }
         },
+        removeUser: {
+            type: UserType,
+            args : {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+            },
+            resolve(parent, args) {
+                User.findByIdAndDelete(args.id)
+            }
+        },
         createPost: {
             type: PostType,
             args: {
@@ -240,6 +249,16 @@ const Mutation = new GraphQLObjectType({
                     },
                     { new: true } // receive the updated object in return
                 )
+            }
+        },
+        removePost: {
+            type: PostType,
+            args : {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+            },
+            resolve(parent, args) {
+                Post.findByIdAndDelete(args.id)
+                .then(res => console.log(res)) // strange, but deletion doesn't work without this line
             }
         },
         createHobby: {
@@ -280,6 +299,16 @@ const Mutation = new GraphQLObjectType({
                     },
                     { new: true } // receive the updated object in return
                 )
+            }
+        },
+        removeHobby: {
+            type: HobbyType,
+            args : {
+                id: {type: new GraphQLNonNull(GraphQLID)},
+            },
+            resolve(parent, args) {
+                Hobby.findByIdAndDelete(args.id)
+                .then(res => console.log(res)) // strange, but deletion doesn't work without this line
             }
         }
     }
